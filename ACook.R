@@ -1,7 +1,6 @@
 # Nitesh Mathur 
 # First Shiny App - Dashboard (with subpages)
 # 20 April 2021 
-# 
 # Data: Cricket Data
 
 library(cricketr)
@@ -64,12 +63,12 @@ ui <- dashboardPage(skin = "red",
 )
 
 server <- function(input, output){
-  output$correlation_plot <- renderPlot(
-    {
-      plot(iris$Sepal.Length, iris[[input$features]],
-           xlab = "Sepal Length", ylab = "Features")
-    }
-  )
+  # output$correlation_plot <- renderPlot(
+  #   {
+  #     plot(iris$Sepal.Length, iris[[input$features]],
+  #          xlab = "Sepal Length", ylab = "Features")
+  #   }
+  # )
   output$A_Cook <- renderDataTable(ACook)
   output$G_Smith <- renderDataTable(GSmith)
   output$K_Sang <- renderDataTable(KSang)
