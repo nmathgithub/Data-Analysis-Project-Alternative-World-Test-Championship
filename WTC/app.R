@@ -8,6 +8,7 @@ library(cricketr)
 library(shiny)
 library(shinydashboard)
 library(tidyverse)
+library(stringi)
 
 scorecard = readLines('https://www.espncricinfo.com/series/australia-in-eng-2019-1144422/england-vs-australia-1st-test-1152846/full-scorecard')
 #Lunch Data
@@ -67,11 +68,25 @@ print(testtea)
 #EndofDay
 out3 = grep('End Of Day:', scorecard)
 end0 = gregexpr('End Of Day:', scorecard[out3])
-end = rep(NA, 0.5*length(end0[[1]]))
+end = rep(NULL)
 for(x in 1:(0.5*length(end0[[1]]))){
-  # print(substring(scorecard[out3],end0[[1]][[x]], end0[[1]][[x]]+36 ))
-  end[[x]] = substring(scorecard[out3],end0[[1]][[x]]+11, end0[[1]][[x]]+36 )
+  print(substring(scorecard[out3],end0[[1]][[x]], end0[[1]][[x]]+36 ))
+  # end[[x]] = substring(scorecard[out3],end0[[1]][[x]]+11, end0[[1]][[x]]+36 )
+  end11 = gsub('-', '\\1', substring(scorecard[out3], end0[[1]][[x]] + 11, end0[[1]][[x]]+36))
+  end11 = gsub('o', '\\1', end11)
+  end11 = gsub('v', '\\1', end11)
+  end11 = gsub('e', '\\1', end11)
+  end11 = gsub('in', '\\1', end11)
+  end11 = gsub('/', ' ', end11)
+  end12 = strsplit(end11," ")
+  endday = stri_remove_empty(end12[[1]])
+  #lunchday = strsplit(lunchday, split = "/")
+  #lunch2 = c(lunch2, lunchday)
+  end = append(end, endday)
 }
+testend = as.data.frame(matrix(end, ncol=4, byrow = TRUE))
+names(testend) = c('Team', 'Runs', 'Wickets', 'Overs')
+print(testend)
     
   
 
