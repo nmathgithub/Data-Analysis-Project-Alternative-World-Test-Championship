@@ -107,6 +107,86 @@ testend = as.data.frame(matrix(end, ncol=4, byrow = TRUE))
 names(testend) = c('Team', 'Runs', 'Wickets', 'Overs')
 print(testend)
     
-  
 
+#EndofDay
+out4 = grep('Innings Break:', scorecard)
+inn0 = gregexpr('Innings Break:', scorecard[out4])
+inn = rep(NULL)
+for(x in 1:(0.5*length(inn0[[1]]))){
+  print(substring(scorecard[out4],inn0[[1]][[x]], inn0[[1]][[x]]+45 ))
+  # end[[x]] = substring(scorecard[out3],end0[[1]][[x]]+11, end0[[1]][[x]]+36 )
+  inn11 = gsub('-', '\\1', substring(scorecard[out4], inn0[[1]][[x]] + 15, inn0[[1]][[x]]+40))
+  inn11 = gsub('o', '\\1', inn11)
+  inn11 = gsub('v', '\\1', inn11)
+  inn11 = gsub('e', '\\1', inn11)
+  inn11 = gsub('in', '\\1', inn11)
+  inn11 = gsub('/', ' ', inn11)
+  inn12 = strsplit(inn11," ")
+  innday = stri_remove_empty(inn12[[1]])
+  #lunchday = strsplit(lunchday, split = "/")
+  #lunch2 = c(lunch2, lunchday)
+  inn = append(inn, innday)
+}
+testinn = as.data.frame(matrix(inn, ncol=4, byrow = TRUE))
+names(testinn) = c('Team', 'Runs', 'Wickets', 'Overs')
+print(testinn)
+  
+# ___________________________________________________________________________
+# Algorithm Starts Here
+# Step I: Allocate Home and Away Points 
+
+home = "England"
+away = "Australia"
+HPoints = rep(NULL)
+APoints = rep(NULL)
+
+if(winner == home)
+  { HPoints = 16; APoints = 0
+  
+  } else if (winner == 'drawn')
+  { HPoints = 8; APoints = 12
+   
+} else {
+  HPoints = 0; APoints = 24
+}
+
+
+# Step I: Session By Session Data 
+days = max(length(testlunch[[1]]), length(testtea[[1]]), length(testend[[1]])) # Iterate over maximum number of days played
+index = c(1); # Counter for index in case of innings break
+for(i in 1:days){
+  if(i==1){
+    S1wickets = as.numeric(testlunch[i,3]);
+    S1runs = as.numeric(testlunch[i,2]);
+    S1RR = as.numeric(testlunch[i,2])/as.numeric(testlunch[i,4])
+    # Sessions 2 and Sessions 3 
+    if(testtea[i,1]==testlunch[i,1]) {
+    S2wickets = as.numeric(testtea[i,3])-as.numeric(testlunch[i,3]);
+    S3wickets = as.numeric(testend[i,3])-as.numeric(testtea[i,3]);
+    S2Runs = as.numeric(testtea[i,2])-as.numeric(testlunch[i,2]);
+    S2RR = as.numeric(testtea[i,2])/as.numeric(testtea[i,4]);
+    S3RR = as.numeric(testend[i,2])/as.numeric(testend[i,4])
+    } else{
+    S2wickets1 = 10 - as.numeric(testlunch[i,3]); 
+    S2wickets2 = as.numeric(testtea[i,3]);
+    S2Runs1 = as.numeric(testinn[index,2])-as.numeric(testlunch[i,3]);
+    S2Runs2 = as.numeric(testtea[i,2]);
+    S2Overs1 = as.numeric(testinn[index,4])-as.numeric(testlunch[i,4]);
+    S2Overs2 = as.numeric(testtea[i,4]);
+    S2RR1 = S2Runs1/S2Overs1; S2RR2 = S2Runs2/S2Overs2
+    # S2Overs2 = as.numeric(testtea[i,4])-as.numeric(testlunch[i,4]);
+    index = index + 1;
+    }
+  }else{
+    #Wickets Per Session
+    S1wickets = as.numeric(testlunch[i,3])-as.numeric(testend[i-1,3]);
+    S2wickets = as.numeric(testtea[i,3])-as.numeric(testlunch[i,3]);
+    S3wickets = as.numeric(testend[i,3])-as.numeric(testtea[i,3]);
+    #Runs Per Session
+    #RunRate Per Session
+    S1RR = as.numeric(testlunch[i,2])/as.numeric(testlunch[i,4])
+    S2RR = as.numeric(testtea[i,2])/as.numeric(testtea[i,4])
+    S3RR = as.numeric(testend[i,2])/as.numeric(testend[i,4])
+  }
+}
 
