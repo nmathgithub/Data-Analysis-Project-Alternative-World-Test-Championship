@@ -9,8 +9,27 @@ library(shiny)
 library(shinydashboard)
 library(tidyverse)
 library(stringi)
+library(htmltab)
+
+# getWTCData = function(PlayerID){
+#   #url = paste("http://stats.espncricinfo.com/ci/engine/player/",PlayerID,".html?class=",MatchType,";template=results;type=batting;;view=dismissal_summary",sep="");
+#   url = paste("https://stats.espncricinfo.com/ci/engine/records/team/match_results/", PlayerID,".html?id=13202;type=tournament", sep ="")
+#   x = htmltab(url, rm_nodata_rows=TRUE)
+# }
+# WTC = getWTCData(13202)
+
+url = paste("https://stats.espncricinfo.com/ci/engine/records/team/match_results.html?id=13202;type=tournament")
+x = htmltab(url, rm_nodata_rows=TRUE)
+winner = x[[3]][[1]]
 
 scorecard = readLines('https://www.espncricinfo.com/series/australia-in-eng-2019-1144422/england-vs-australia-1st-test-1152846/full-scorecard')
+
+#Match Result Data
+out0 = grep('won', scorecard)
+result0 = gregexpr('won', scorecard[out0])
+print(substring(scorecard[out0], result0[[1]][[1]]-15, result0[[1]][[1]]+15))
+
+
 #Lunch Data
 out1 = grep('Lunch:', scorecard)
 # Output: 158 
