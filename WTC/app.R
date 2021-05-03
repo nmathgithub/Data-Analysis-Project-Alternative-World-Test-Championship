@@ -150,43 +150,84 @@ if(winner == home)
   HPoints = 0; APoints = 24
 }
 
+HPoints1 = rep(NULL)
+APoints1 = rep(NULL)
 
-# Step I: Session By Session Data 
+# Step II: Session By Session Data 
 days = max(length(testlunch[[1]]), length(testtea[[1]]), length(testend[[1]])) # Iterate over maximum number of days played
 index = c(1); # Counter for index in case of innings break
-for(i in 1:days){
-  if(i==1){
-    S1wickets = as.numeric(testlunch[i,3]);
-    S1runs = as.numeric(testlunch[i,2]);
-    S1RR = as.numeric(testlunch[i,2])/as.numeric(testlunch[i,4])
-    # Sessions 2 and Sessions 3 
-    if(testtea[i,1]==testlunch[i,1]) {
-    S2wickets = as.numeric(testtea[i,3])-as.numeric(testlunch[i,3]);
-    S3wickets = as.numeric(testend[i,3])-as.numeric(testtea[i,3]);
-    S2Runs = as.numeric(testtea[i,2])-as.numeric(testlunch[i,2]);
-    S2RR = as.numeric(testtea[i,2])/as.numeric(testtea[i,4]);
-    S3RR = as.numeric(testend[i,2])/as.numeric(testend[i,4])
-    } else{
-    S2wickets1 = 10 - as.numeric(testlunch[i,3]); 
-    S2wickets2 = as.numeric(testtea[i,3]);
-    S2Runs1 = as.numeric(testinn[index,2])-as.numeric(testlunch[i,3]);
-    S2Runs2 = as.numeric(testtea[i,2]);
-    S2Overs1 = as.numeric(testinn[index,4])-as.numeric(testlunch[i,4]);
-    S2Overs2 = as.numeric(testtea[i,4]);
-    S2RR1 = S2Runs1/S2Overs1; S2RR2 = S2Runs2/S2Overs2
-    # S2Overs2 = as.numeric(testtea[i,4])-as.numeric(testlunch[i,4]);
-    index = index + 1;
-    }
-  }else{
-    #Wickets Per Session
-    S1wickets = as.numeric(testlunch[i,3])-as.numeric(testend[i-1,3]);
-    S2wickets = as.numeric(testtea[i,3])-as.numeric(testlunch[i,3]);
-    S3wickets = as.numeric(testend[i,3])-as.numeric(testtea[i,3]);
-    #Runs Per Session
-    #RunRate Per Session
-    S1RR = as.numeric(testlunch[i,2])/as.numeric(testlunch[i,4])
-    S2RR = as.numeric(testtea[i,2])/as.numeric(testtea[i,4])
-    S3RR = as.numeric(testend[i,2])/as.numeric(testend[i,4])
+# for(i in 1:days){
+#   if(i==1){
+#     S1wickets = as.numeric(testlunch[i,3]);
+#     S1runs = as.numeric(testlunch[i,2]);
+#     S1RR = as.numeric(testlunch[i,2])/as.numeric(testlunch[i,4])
+#     # Sessions 2 and Sessions 3 
+#     if(testtea[i,1]==testlunch[i,1]) {
+#     S2wickets = as.numeric(testtea[i,3])-as.numeric(testlunch[i,3]);
+#     S3wickets = as.numeric(testend[i,3])-as.numeric(testtea[i,3]);
+#     S2Runs = as.numeric(testtea[i,2])-as.numeric(testlunch[i,2]);
+#     S2RR = as.numeric(testtea[i,2])/as.numeric(testtea[i,4]);
+#     S3RR = as.numeric(testend[i,2])/as.numeric(testend[i,4])
+#     } else{
+#     S2wickets1 = 10 - as.numeric(testlunch[i,3]); 
+#     S2wickets2 = as.numeric(testtea[i,3]);
+#     S2Runs1 = as.numeric(testinn[index,2])-as.numeric(testlunch[i,3]);
+#     S2Runs2 = as.numeric(testtea[i,2]);
+#     S2Overs1 = as.numeric(testinn[index,4])-as.numeric(testlunch[i,4]);
+#     S2Overs2 = as.numeric(testtea[i,4]);
+#     S2RR1 = S2Runs1/S2Overs1; S2RR2 = S2Runs2/S2Overs2
+#     # S2Overs2 = as.numeric(testtea[i,4])-as.numeric(testlunch[i,4]);
+#     index = index + 1;
+#     }
+#   }else{
+#     #Wickets Per Session
+#     S1wickets = as.numeric(testlunch[i,3])-as.numeric(testend[i-1,3]);
+#     S2wickets = as.numeric(testtea[i,3])-as.numeric(testlunch[i,3]);
+#     S3wickets = as.numeric(testend[i,3])-as.numeric(testtea[i,3]);
+#     #Runs Per Session
+#     #RunRate Per Session
+#     S1RR = as.numeric(testlunch[i,2])/as.numeric(testlunch[i,4])
+#     S2RR = as.numeric(testtea[i,2])/as.numeric(testtea[i,4])
+#     S3RR = as.numeric(testend[i,2])/as.numeric(testend[i,4])
+#   }
+# }
+session = list(testlunch, testtea, testend, testinn)
+mapply(write.table, x = session, file = c("testlunch.txt", "testtea.txt", "testend.txt", "testinn.txt"))
+
+session_data <- function(day, sess_start, sess_end) { #If Session is Day 1 Lunch
+  if(day == 1 & sess_start==0 & sess_end ==1 ){
+    Swickets = as.numeric(testlunch[1,3]);
+    Sruns = as.numeric(testlunch[1,2]);
+    Sovers = as.numeric(testlunch[1,4])
+    SRR = Sruns/Sovers
   }
+  else if(sess_start == 0) {
+    Swickets = as.numeric(testlunch[day,3])-as.numeric(testend[day-1,3])
+    Sruns = as.numeric(testlunch[day,2])-as.numeric(testend[day-1,2])
+    Sovers = as.numeric(testlunch[day,4])-as.numeric(testend[day-1,4])
+    SRR = Sruns/Sovers
+  }
+  # else if (sess == 3){
+  #   Swickets = as.numeric(testlunch[day+1,3])-as.numeric(testend[day,3])
+  #   Sruns = as.numeric(testlunch[day+1,2])-as.numeric(testend[day,2])
+  #   Sovers = as.numeric(testlunch[day+1,4])-as.numeric(testend[day,4])
+  #   SRR = Sruns/Sovers
+  # }
+  else {
+    Swickets = as.numeric(session[[sess_end]][day,3])-as.numeric(session[[sess_start]][day,3])
+    Sruns = as.numeric(session[[sess_end]][day,2])-as.numeric(session[[sess_start]][day,2])
+    Sovers = as.numeric(session[[sess_end]][day,4])-as.numeric(session[[sess_start]][day,4])
+    SRR = Sruns/Sovers
+  }
+  #Add recursion in case of innings break in the middle of the session
+   # if(Swickets <= 0){
+   #   list00 =  session_data(day, sess_start, 4)
+   #   list01 =  session_data(day, 4, sess_end)
+   #   index = index +1 
+   # }
+  newList = list(Swickets, Sruns, Sovers, SRR)
+  return(newList)
 }
 
+# l = list(df1, df2)
+# mapply(write.table, x = l, file = c("df1.txt", "df2.txt"))
