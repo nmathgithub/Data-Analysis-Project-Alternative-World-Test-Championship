@@ -1,0 +1,4 @@
+"Team" "Runs" "Wickets" "Overs"
+"1" "Australia" "284" "10" "80.4"
+"2" "England" "374" "10" "135.5"
+"3" "Australia" "487" "7" "112.0"

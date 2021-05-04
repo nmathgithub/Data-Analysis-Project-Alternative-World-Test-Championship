@@ -155,7 +155,7 @@ APoints1 = rep(NULL)
 
 # Step II: Session By Session Data 
 days = max(length(testlunch[[1]]), length(testtea[[1]]), length(testend[[1]])) # Iterate over maximum number of days played
-index = c(1); # Counter for index in case of innings break
+# index = c(1); # Counter for index in case of innings break
 # for(i in 1:days){
 #   if(i==1){
 #     S1wickets = as.numeric(testlunch[i,3]);
@@ -194,7 +194,9 @@ index = c(1); # Counter for index in case of innings break
 session = list(testlunch, testtea, testend, testinn)
 mapply(write.table, x = session, file = c("testlunch.txt", "testtea.txt", "testend.txt", "testinn.txt"))
 
-session_data <- function(day, sess_start, sess_end) { #If Session is Day 1 Lunch
+# index = 1;
+session_data <- function(day, sess_start, sess_end) {
+#If Session is Day 1 Lunch
   if(day == 1 & sess_start==0 & sess_end ==1 ){
     Swickets = as.numeric(testlunch[1,3]);
     Sruns = as.numeric(testlunch[1,2]);
@@ -220,14 +222,33 @@ session_data <- function(day, sess_start, sess_end) { #If Session is Day 1 Lunch
     SRR = Sruns/Sovers
   }
   #Add recursion in case of innings break in the middle of the session
-   # if(Swickets <= 0){
-   #   list00 =  session_data(day, sess_start, 4)
-   #   list01 =  session_data(day, 4, sess_end)
-   #   index = index +1 
-   # }
-  newList = list(Swickets, Sruns, Sovers, SRR)
+   if(Swickets <= 0){  # index = c(1) # For counter 
+     print(session[[4]])
+     #list00 =  session_data(index, sess_start, 4)
+     #index = index +1; print(index)
+     #Swickets1 = list00[[1]]; Sruns1 = list00[[2]]; Sovers1 = list00[[3]]; SRR1 = list00[[4]]
+     Swickets1 = as.numeric(session[[4]][index,3])-as.numeric(session[[sess_start]][day,3])
+     Sruns1 = as.numeric(session[[4]][index,2])-as.numeric(session[[sess_start]][day,2])
+     Sovers1 = as.numeric(session[[4]][index,4])-as.numeric(session[[sess_start]][day,4])
+     SRR1 = Sruns/Sovers
+     # session[[4]] = session[[4]][-c(1),]
+     # print(session[[4]])
+     # index = index +1; print(index);
+     Swickets2 = as.numeric(session[[sess_end]][day,2])
+     Sruns2 = as.numeric(session[[sess_end]][day,3])
+     Sovers2 =  as.numeric(session[[sess_end]][day,4])
+     SRR2 = Sruns2/Sovers2;
+     newList = list(Swickets1,Sruns1, Sovers1, SRR1, Swickets2, Sruns2, Sovers2, SRR2)
+     #return(newList0)
+     # list01 =  session_data(day, 4, sess_end)
+   }
+  else {newList = list(Swickets, Sruns, Sovers, SRR)} 
   return(newList)
 }
+
+# for(i in 1:days){
+#   session_data(i,0,1)
+# }
 
 # l = list(df1, df2)
 # mapply(write.table, x = l, file = c("df1.txt", "df2.txt"))
