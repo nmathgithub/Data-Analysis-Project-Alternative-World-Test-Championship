@@ -19,8 +19,8 @@ library(htmltab)
 # WTC = getWTCData(13202)
 
 url = paste("https://stats.espncricinfo.com/ci/engine/records/team/match_results.html?id=13202;type=tournament")
-x = htmltab(url, rm_nodata_rows=TRUE)
-winner = x[[3]][[1]]
+res = htmltab(url, rm_nodata_rows=TRUE)
+winner = res[[3]][[1]]
 
 scorecard = readLines('https://www.espncricinfo.com/series/australia-in-eng-2019-1144422/england-vs-australia-1st-test-1152846/full-scorecard')
 
@@ -108,7 +108,7 @@ names(testend) = c('Team', 'Runs', 'Wickets', 'Overs')
 print(testend)
     
 
-#EndofDay
+#Innings Breaks
 out4 = grep('Innings Break:', scorecard)
 inn0 = gregexpr('Innings Break:', scorecard[out4])
 inn = rep(NULL)
@@ -130,6 +130,35 @@ for(x in 1:(0.5*length(inn0[[1]]))){
 testinn = as.data.frame(matrix(inn, ncol=4, byrow = TRUE))
 names(testinn) = c('Team', 'Runs', 'Wickets', 'Overs')
 print(testinn)
+
+#EndofMatch
+out5 = grep('end of match', scorecard)
+final = gregexpr('end of match', scorecard[out5])
+final1 = rep(NULL)
+for(x in 1:(0.5*length(final[[1]]))){
+  print(substring(scorecard[out5],final[[1]][[x]]-19, final[[1]][[x]]-4 ))
+  # end[[x]] = substring(scorecard[out3],end0[[1]][[x]]+11, end0[[1]][[x]]+36 )
+  fin11 = gsub('-', '\\1', substring(scorecard[out5], final[[1]][[x]] - 19, final[[1]][[x]] - 4))
+  fin11 = gsub('o', '\\1', fin11)
+  fin11 = gsub('v', '\\1', fin11)
+  fin11 = gsub('e', '\\1', fin11)
+  fin11 = gsub('in', '\\1', fin11)
+  fin11 = gsub("(", ' ', fin11, fixed = TRUE)
+  fin11 = gsub(")", ' ', fin11, fixed = TRUE)
+  fin11 = gsub('/', ' ', fin11)
+  fin12 = strsplit(fin11," ")
+  finnday = stri_remove_empty(fin12[[1]])
+  #lunchday = strsplit(lunchday, split = "/")
+  #lunch2 = c(lunch2, lunchday)
+  final1 = append(final1, finnday)
+}
+testfinn = as.data.frame(matrix(final1, ncol=3, byrow = TRUE))
+testfinn = cbind("England", testfinn)
+names(testfinn) = c('Team', 'Runs', 'Wickets', 'Overs')
+# testfinn[1,][[1]] = "England"
+print(testfinn)
+testinn[4,] = testfinn[1,]
+
   
 # ___________________________________________________________________________
 # Algorithm Starts Here
@@ -141,13 +170,13 @@ HPoints = rep(NULL)
 APoints = rep(NULL)
 
 if(winner == home)
-  { HPoints = 16; APoints = 0
+  { HPoints = 16; APoints = 0; loser = away;
   
   } else if (winner == 'drawn')
   { HPoints = 8; APoints = 12
    
 } else {
-  HPoints = 0; APoints = 24
+  HPoints = 0; APoints = 24; loser = home;
 }
 
 # HPoints1 = rep(NULL)
@@ -195,7 +224,7 @@ session = list(testlunch, testtea, testend, testinn)
 mapply(write.table, x = session, file = c("testlunch.txt", "testtea.txt", "testend.txt", "testinn.txt"))
 
 # index = 1;
-innings = 1;
+# innings = 1;
 session_data <- function(day, sess_start, sess_end, innings) {
 #If Session is Day 1 Lunch
   if(day == 1 & sess_start==0 & sess_end ==1 ){
@@ -227,6 +256,11 @@ session_data <- function(day, sess_start, sess_end, innings) {
     Team = session[[sess_start]][day,1]
   }
   #Add recursion in case of innings break in the middle of the session
+  if(anyNA(session[[sess_end]][day,3])==TRUE){
+    Swickets = -1; # print(Swickets)
+    # Team2 = 'end';
+  }
+  
    if(Swickets <= 0){  # index = c(1) # For counter 
      # print(session[[4]])
      #list00 =  session_data(index, sess_start, 4)
@@ -245,6 +279,10 @@ session_data <- function(day, sess_start, sess_end, innings) {
      Sovers2 =  as.numeric(session[[sess_end]][day,4])
      SRR2 = Sruns2/Sovers2;
      Team2 = session[[sess_end]][day,1]
+     # if(anyNA(Team2)==TRUE){
+     #   #Swickets = -1; # print(Swickets)
+     #   Team2 = "end";
+     #}
      newList = list(Team1, Swickets1,Sruns1, Sovers1, SRR1, innings, Team2, Swickets2, Sruns2, Sovers2, SRR2)
      #return(newList0)
      # list01 =  session_data(day, 4, sess_end)
@@ -254,40 +292,77 @@ session_data <- function(day, sess_start, sess_end, innings) {
 }
 
 #Session By Session Points Allocation
+HList = rep(NULL); AList = rep(NULL)
+Hrecord = rep(NULL); Arecord = rep(NULL)
 Hpoints1 = 0; Apoints1 = 0; 
 inn = 1; start = 0; end = 1;
 for(i in 1:days){
   for(j in 0:2){
    list = session_data(i,j,j+1,inn)
-   if( (list[[2]] <= 1) || (list[[5]] >= 3.5) ) 
-   { bat = 2; bowl = 0;
+   if( (list[[2]] <= 1) || (list[[5]] >= 3.5 && list[[2]]<=3) || (list[[2]]<=1 && list[[5]]<=2)) 
+   { bat = 2; batrec = 'W';
+    bowl = 0; bowlrec = 'L'; 
    }
-   else if((list[[2]] >= 4) || (list[[5]] <= 2)){
-     bat = 0; bowl = 2;
+   else if((list[[2]] >= 4) || (list[[5]] <= 2) || (list[[2]]>= 4 && list[[5]]>= 3.5) ){
+     bat = 0; batrec = 'L'; 
+     bowl = 2; bowlrec = 'W'; 
    }
    else{
-     bat = 1; bowl = 1; 
+     bat = 1; batrec = 'T';
+     bowl = 1; bowlrec = 'T';
    }
    if(list[[1]]==home)
    {
-     Hpoints1 = Hpoints1 + bat;
-     Apoints1 = Apoints1 + bowl; 
+     Hpoints1 = Hpoints1 + bat; HList = append(HList, Hpoints1); Hrecord = append(Hrecord, batrec);
+     Apoints1 = Apoints1 + bowl; AList = append(AList, Apoints1); Arecord = append(Arecord, bowlrec);
    }
    else{
-     Apoints1 = Apoints1 + bat;
-     Hpoints1 = Hpoints1 + bowl; 
+     Apoints1 = Apoints1 + bat; AList = append(AList, Apoints1); Arecord = append(Arecord, batrec);
+     Hpoints1 = Hpoints1 + bowl; HList = append(HList, Hpoints1); Hrecord = append(Hrecord, bowlrec);
    }
    #print(list)
    inn = list[[6]];
   }
- }
+}
+
+#If Match finishes before Tea on Day 5, winning team gets the rest of the session points
+if( (length(HList<15)) && (winner==home) ) {
+  HBonus1 = (2*(15-length(HList))); ABonus1 = 0;
+} else if( (length(HList<15)) && (winner==away) ){
+  ABonus1 =  (2*(15-length(HList))); HBonus1 = 0; 
+}
 
 #Final Points 
-HTotal = HPoints + Hpoints1 
-ATotal = APoints + Apoints1 
+HTotal = HPoints + Hpoints1 + HBonus1
+ATotal = APoints + Apoints1 + ABonus1
 
-print(HTotal)
-print(ATotal)
+
+#Final Presentation - Home Team
+hometab = c(home, HPoints, Hpoints1, HBonus1, HTotal)
+tab1 = as.data.frame(matrix(hometab, ncol=5, byrow=TRUE))
+names(tab1) = c('Team', 'Home/Away', 'Session', 'Bonus', 'Total')
+
+
+#Final Presentation - Away Team
+awaytab = c(away, APoints, Apoints1, ABonus1, ATotal)
+tab2 = as.data.frame(matrix(awaytab, ncol=5, byrow=TRUE))
+names(tab2) = c('Team', 'Home/Away', 'Session', 'Bonus', 'Total')
+tab1[2,] = tab2[1,]
+
+
+#Final Presentation - Detail
+print(HTotal); print(ATotal)
+print(HList); print(AList);
+print(Hrecord); print(Arecord);
+if(winner == home){
+  print(table(Hrecord))
+} else {
+  print(table(Arecord))
+}
+print(tab1)
+
+
 
 # l = list(df1, df2)
 # mapply(write.table, x = l, file = c("df1.txt", "df2.txt"))
+
