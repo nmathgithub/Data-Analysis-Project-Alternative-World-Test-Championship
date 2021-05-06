@@ -150,8 +150,8 @@ if(winner == home)
   HPoints = 0; APoints = 24
 }
 
-HPoints1 = rep(NULL)
-APoints1 = rep(NULL)
+# HPoints1 = rep(NULL)
+# APoints1 = rep(NULL)
 
 # Step II: Session By Session Data 
 days = max(length(testlunch[[1]]), length(testtea[[1]]), length(testend[[1]])) # Iterate over maximum number of days played
@@ -195,19 +195,23 @@ session = list(testlunch, testtea, testend, testinn)
 mapply(write.table, x = session, file = c("testlunch.txt", "testtea.txt", "testend.txt", "testinn.txt"))
 
 # index = 1;
-session_data <- function(day, sess_start, sess_end) {
+innings = 1;
+session_data <- function(day, sess_start, sess_end, innings) {
 #If Session is Day 1 Lunch
   if(day == 1 & sess_start==0 & sess_end ==1 ){
     Swickets = as.numeric(testlunch[1,3]);
     Sruns = as.numeric(testlunch[1,2]);
     Sovers = as.numeric(testlunch[1,4])
     SRR = Sruns/Sovers
+    Team = testlunch[1,1]
   }
   else if(sess_start == 0) {
     Swickets = as.numeric(testlunch[day,3])-as.numeric(testend[day-1,3])
     Sruns = as.numeric(testlunch[day,2])-as.numeric(testend[day-1,2])
     Sovers = as.numeric(testlunch[day,4])-as.numeric(testend[day-1,4])
     SRR = Sruns/Sovers
+    Team = testlunch[day,1]
+    
   }
   # else if (sess == 3){
   #   Swickets = as.numeric(testlunch[day+1,3])-as.numeric(testend[day,3])
@@ -220,35 +224,70 @@ session_data <- function(day, sess_start, sess_end) {
     Sruns = as.numeric(session[[sess_end]][day,2])-as.numeric(session[[sess_start]][day,2])
     Sovers = as.numeric(session[[sess_end]][day,4])-as.numeric(session[[sess_start]][day,4])
     SRR = Sruns/Sovers
+    Team = session[[sess_start]][day,1]
   }
   #Add recursion in case of innings break in the middle of the session
    if(Swickets <= 0){  # index = c(1) # For counter 
-     print(session[[4]])
+     # print(session[[4]])
      #list00 =  session_data(index, sess_start, 4)
      #index = index +1; print(index)
      #Swickets1 = list00[[1]]; Sruns1 = list00[[2]]; Sovers1 = list00[[3]]; SRR1 = list00[[4]]
-     Swickets1 = as.numeric(session[[4]][index,3])-as.numeric(session[[sess_start]][day,3])
-     Sruns1 = as.numeric(session[[4]][index,2])-as.numeric(session[[sess_start]][day,2])
-     Sovers1 = as.numeric(session[[4]][index,4])-as.numeric(session[[sess_start]][day,4])
+     Swickets1 = as.numeric(session[[4]][innings,3])-as.numeric(session[[sess_start]][day,3])
+     Sruns1 = as.numeric(session[[4]][innings,2])-as.numeric(session[[sess_start]][day,2])
+     Sovers1 = as.numeric(session[[4]][innings,4])-as.numeric(session[[sess_start]][day,4])
      SRR1 = Sruns/Sovers
+     Team1 = session[[sess_start]][day,1]
      # session[[4]] = session[[4]][-c(1),]
      # print(session[[4]])
-     # index = index +1; print(index);
+     innings = innings +1; #print(index);
      Swickets2 = as.numeric(session[[sess_end]][day,2])
      Sruns2 = as.numeric(session[[sess_end]][day,3])
      Sovers2 =  as.numeric(session[[sess_end]][day,4])
      SRR2 = Sruns2/Sovers2;
-     newList = list(Swickets1,Sruns1, Sovers1, SRR1, Swickets2, Sruns2, Sovers2, SRR2)
+     Team2 = session[[sess_end]][day,1]
+     newList = list(Team1, Swickets1,Sruns1, Sovers1, SRR1, innings, Team2, Swickets2, Sruns2, Sovers2, SRR2)
      #return(newList0)
      # list01 =  session_data(day, 4, sess_end)
    }
-  else {newList = list(Swickets, Sruns, Sovers, SRR)} 
+  else {newList = list(Team, Swickets, Sruns, Sovers, SRR, innings)} 
   return(newList)
 }
 
-# for(i in 1:days){
-#   session_data(i,0,1)
-# }
+#Session By Session Points Allocation
+Hpoints1 = 0; Apoints1 = 0; 
+inn = 1; start = 0; end = 1;
+for(i in 1:days){
+  for(j in 0:2){
+   list = session_data(i,j,j+1,inn)
+   if( (list[[2]] <= 1) || (list[[5]] >= 3.5) ) 
+   { bat = 2; bowl = 0;
+   }
+   else if((list[[2]] >= 4) || (list[[5]] <= 2)){
+     bat = 0; bowl = 2;
+   }
+   else{
+     bat = 1; bowl = 1; 
+   }
+   if(list[[1]]==home)
+   {
+     Hpoints1 = Hpoints1 + bat;
+     Apoints1 = Apoints1 + bowl; 
+   }
+   else{
+     Apoints1 = Apoints1 + bat;
+     Hpoints1 = Hpoints1 + bowl; 
+   }
+   #print(list)
+   inn = list[[6]];
+  }
+ }
+
+#Final Points 
+HTotal = HPoints + Hpoints1 
+ATotal = APoints + Apoints1 
+
+print(HTotal)
+print(ATotal)
 
 # l = list(df1, df2)
 # mapply(write.table, x = l, file = c("df1.txt", "df2.txt"))
