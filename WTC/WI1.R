@@ -20,9 +20,10 @@ library(htmltab)
 
 url = paste("https://stats.espncricinfo.com/ci/engine/records/team/match_results.html?id=13202;type=tournament")
 res = htmltab(url, rm_nodata_rows=TRUE)
-winner = res[[3]][[6]]
-home = res[[1]][[6]]; #home = gsub(" ", "", home, fixed = TRUE); #Removes spaces in Sri Lanka, New Zealand, South Africa, West Indies, etc.
-away = res[[2]][[6]]; #away = gsub(" ", "", away, fixed = TRUE); 
+winner = res[[3]][[7]]
+home = res[[1]][[7]]; #home = gsub(" ", "", home, fixed = TRUE); #Removes spaces in Sri Lanka, New Zealand, South Africa, West Indies, etc.
+away = res[[2]][[7]]; #away = gsub(" ", "", away, fixed = TRUE); 
+# 6 and 7 for West Indies series 
 
 # matches = c(1152846)
 # for(x in 1:length(matches)) {
@@ -33,10 +34,10 @@ away = res[[2]][[6]]; #away = gsub(" ", "", away, fixed = TRUE);
 # }
 
 
-
-#scorecard = readLines('https://www.espncricinfo.com/series/icc-world-test-championship-2019-2021-1195334/england-vs-australia-5th-test-1152850/full-scorecard')
-scorecard = readLines('https://www.espncricinfo.com/series/icc-world-test-championship-2019-2021-1195334/west-indies-vs-india-1st-test-1188628/full-scorecard')
-
+#1st Test
+#scorecard = readLines('https://www.espncricinfo.com/series/icc-world-test-championship-2019-2021-1195334/west-indies-vs-india-1st-test-1188628/full-scorecard')
+#2nd Test 
+scorecard = readLines('https://www.espncricinfo.com/series/icc-world-test-championship-2019-2021-1195334/west-indies-vs-india-2nd-test-1188629/full-scorecard')
 #Match Result Data
 out0 = grep('won', scorecard)
 result0 = gregexpr('won', scorecard[out0])
@@ -52,15 +53,18 @@ lunch = rep(NULL)
 for(x in 1:(0.5*length(lunch0[[1]]))){
   print(substring(scorecard[out1],lunch0[[1]][[x]], lunch0[[1]][[x]]+39 ))
   #lunch[[x]] = substring(scorecard[out],lunch0[[1]][[x]] +7, lunch0[[1]][[x]]+30)
-  lunch11 = gsub('-', '\\1', substring(scorecard[out1],lunch0[[1]][[x]] +7, lunch0[[1]][[x]]+30))
+  lunch11 = gsub('-', '\\1', substring(scorecard[out1],lunch0[[1]][[x]] +7, lunch0[[1]][[x]]+32))
+  lunch11 = gsub('(', '\\1', lunch11, fixed = TRUE)
+  lunch11 = gsub('overs', '\\1', lunch11)
+  lunch11 = gsub('over', '\\1', lunch11)
+  lunch11 = gsub('ove', '\\1', lunch11)
   lunch11 = gsub('ov', '\\1', lunch11)
   lunch11 = gsub('er', '\\1', lunch11)
-  lunch11 = gsub('ove', '\\1', lunch11)
-  lunch11 = gsub('r', '\\1', lunch11)
+  #lunch11 = gsub('r', '\\1', lunch11)
   lunch11 = gsub('o', '\\1', lunch11)
   lunch11 = gsub('v', '\\1', lunch11)
   # = gsub('v', '\\1', lunch11)
-  lunch11 = gsub('e', '\\1', lunch11)
+  # lunch11 = gsub('e', '\\1', lunch11)
   lunch11 = gsub('r', '\\1', lunch11)
   lunch11 = gsub('in', '\\1', lunch11)
   lunch11 = gsub('li>', '\\1', lunch11)
@@ -94,16 +98,16 @@ for(x in 1:(0.5*length(tea0[[1]]))){
   # tea[[x]] = substring(scorecard[out2],tea0[[1]][[x]]+5, tea0[[1]][[x]]+32)
   tea11 = gsub('-', '\\1', substring(scorecard[out2],tea0[[1]][[x]] +5, tea0[[1]][[x]]+30))
   tea11 = gsub('overs', '\\1', tea11)
+  tea11 = gsub('over', '\\1', tea11)
+  tea11 = gsub('ove', '\\1', tea11)
+  tea11 = gsub('ov', '\\1', tea11)
+  tea11 = gsub('er', '\\1', tea11)  
   tea11 = gsub('o', '\\1', tea11)
   tea11 = gsub('v', '\\1', tea11)
-  tea11 = gsub('ov', '\\1', tea11)
-  tea11 = gsub('er', '\\1', tea11)
   tea11 = gsub('in', '\\1', tea11)
   tea11 = gsub('ul><', '',tea11)
   tea11 = gsub('<', '',tea11)
   tea11 = gsub('li>', '',tea11)
-  lunch11 = gsub('ov', '\\1', lunch11)
-  lunch11 = gsub('er', '\\1', lunch11)
   #  tea11 = gsub('e', '',tea11)
   #tea11 = gsub('ul', '',tea11)
   tea11 = gsub('/', ' ', tea11)
@@ -120,6 +124,7 @@ for(x in 1:(0.5*length(tea0[[1]]))){
 # if(tea0[[1]][[1]] > lunch0[[1]][[2]])
 # {tea = prepend(tea, rep(0,4))
 # }
+tea = append(tea, '0.0', 7)
 testtea = as.data.frame(matrix(tea, ncol=4, byrow = TRUE))
 names(testtea) = c('Team', 'Runs', 'Wickets', 'Overs')
 print(testtea)
@@ -194,11 +199,11 @@ for(x in 1:(0.5 * length(inn0[[1]]))){
   #lunch2 = c(lunch2, lunchday)
   inn = append(inn, innday)
 }
+inn[[9]] = 'India'; inn[[10]] = 168;inn[[11]] = 4; inn[[12]] = 45.4; # Test2 Innings Break (Declared)
 testinn = as.data.frame(matrix(inn, ncol=4, byrow = TRUE))
 names(testinn) = c('Team', 'Runs', 'Wickets', 'Overs')
-testinn = rbind(testlunch[2,], testinn)
-# testinn = rbind(testinn[1,], testlunch[2,])
-# testinn[1,] = testlunch[2,] #Day 2 lunch = 1st End of innings
+# testinn = rbind(testlunch[2,], testinn) - Needed for Test 1 
+# #Day 2 lunch = 1st End of innings
 print(testinn)
 
 #EndofMatch
