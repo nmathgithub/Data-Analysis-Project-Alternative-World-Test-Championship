@@ -1,0 +1,68 @@
+# Nitesh Mathur
+# 3 June 2021 
+# Border Gavaskar Trophy
+
+#1st Test (36 All Out)
+[1] "W" "L" "L" "W" "L" "T" "W" "W"
+[1] "L" "W" "W" "L" "W" "T" "L" "L"
+
+Hrecord
+L T W 
+3 1 4 
+
+       Team Home/Away Session Bonus Total
+1 Australia        16       9    14    39
+2     India         0       7     0     7
+___________________________________________
+# 2nd Test
+
+ [1] "T" "T" "L" "T" "L" "L" "W" "T" "L" "L" "T"
+ [1] "T" "T" "W" "T" "W" "W" "L" "T" "W" "W" "T"
+ 
+ Arecord
+L T W 
+1 5 5 
+
+       Team Home/Away Session Bonus Total
+1 Australia         0       7     0     7
+2     India        24      15     8    47
+___________________________________________
+# 3rd Test
+
+ [1] "W" "W" "W" "T" "T" "W" "T" "W" "W" "T" "W" "T" "L" "T" "L"
+ [1] "L" "L" "L" "T" "T" "L" "T" "L" "L" "T" "L" "T" "W" "T" "W"
+ 
+ Arecord
+L T W 
+7 6 2
+
+       Team Home/Away Session Bonus Total
+1 Australia         8      20     0    28
+2     India        12      10     0    22
+___________________________________________________________________
+#4th Test
+
+ [1] "T" "W" "W" "L" "W" "T" "T" "T" "W" "L" "W" "W" "L" "L" "T"
+ [1] "T" "L" "L" "W" "L" "T" "T" "T" "L" "W" "L" "L" "W" "W" "T"
+ 
+ Arecord
+L T W 
+6 5 4 
+
+       Team Home/Away Session Bonus Total
+1 Australia         0      17     0    17
+2     India        24      13     0    37
+________________________________________________________________________
+Total Sessions Won: 
+
+India: 14, Australia: 18, Tied: 17
+
+       Team Home/Away Session Bonus Total
+1 Australia         24     53     14   91
+2     India         60     45     8    113
+
+
+
+
+
+ 
