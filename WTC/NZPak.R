@@ -1,7 +1,7 @@
 # Nitesh Mathur 
-# 3 May 2021 
+# 3 June 2021 
 # World Test Championship 
-# New Zealand - West Indies Series 
+# New Zealand - Pakistan Series 
 # 38, 41 on WTC List 
 
 
