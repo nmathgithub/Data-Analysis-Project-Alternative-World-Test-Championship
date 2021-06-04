@@ -201,3 +201,64 @@ Total
 1  Bangladesh         0      24     0    24
 2 West Indies        48      30     6    84
 __________________________________________________________
+England Tour of India
+
+1st Test 
+
+ [1] "T" "L" "L" "L" "L" "W" "T" "W" "T" "L" "T" "W" "T" "L"
+ [1] "T" "W" "W" "W" "W" "L" "T" "L" "T" "W" "T" "L" "T" "W"
+ 
+Arecord
+L T W 
+3 5 6 
+
+     Team Home/Away Session Bonus Total
+1   India         0      11     0    11
+2 England        24      17     2    43
+
+2nd Test 
+
+ [1] "W" "W" "T" "L" "W" "T" "L" "T" "W" "W" "L"
+ [1] "L" "L" "T" "W" "L" "T" "W" "T" "L" "L" "W"
+ 
+Hrecord
+L T W 
+3 3 5 
+
+     Team Home/Away Session Bonus Total
+1   India        16      13     8    37
+2 England         0       9     0     9
+
+3rd Test 
+
+[1] "W" "W" "T" "L" "L" "L"
+[1] "L" "L" "T" "W" "W" "W"
+
+Hrecord
+L T W 
+3 1 2 
+
+     Team Home/Away Session Bonus Total
+1   India        16       5    18    39
+2 England         0       7     0     7
+
+4th Test 
+
+[1] "T" "T" "W" "T" "T" "W" "T" "W" "W"
+[1] "T" "T" "L" "T" "T" "L" "T" "L" "L"
+
+Hrecord
+T W 
+5 4 
+
+     Team Home/Away Session Bonus Total
+1   India        16      13    12    41
+2 England         0       5     0     5
+
+
+Total 
+
+     Team Home/Away Session Bonus Total
+1   India        48      42    38    128
+2 England        24      38     2     64
+____________________________________________
