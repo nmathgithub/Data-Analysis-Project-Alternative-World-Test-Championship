@@ -101,5 +101,34 @@ Total
 1 South Africa        32      17    22    71
 2    Sri Lanka         0      21     0    21
 ________________________________________________
+ 1st Test 
  
+ [1] "T" "L" "T" "L" "L" "T" "T" "W" "T" "T" "T" "T" "L"
+ [1] "T" "W" "T" "W" "W" "T" "T" "L" "T" "T" "T" "T" "W"
+ 
+Arecord
+L T W 
+1 8 4 
+        Team Home/Away Session Bonus Total
+1 Sri Lanka         0      10     0    10
+2   England        24      16     4    44
+
+2nd Test 
+
+ [1] "T" "W" "W" "T" "L" "W" "T" "T" "T" "L" "T" "L"
+ [1] "T" "L" "L" "T" "W" "L" "T" "T" "T" "W" "T" "W"
+ 
+ Arecord
+L T W 
+3 6 3 
+
+       Team Home/Away Session Bonus Total
+1 Sri Lanka         0      12     0    12
+2   England        24      12     6    42
+
+Total
+
+       Team Home/Away Session Bonus Total
+1 Sri Lanka         0      22     0    22
+2   England        48      28    10    86
  
