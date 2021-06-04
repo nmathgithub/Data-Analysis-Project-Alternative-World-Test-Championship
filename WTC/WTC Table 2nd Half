@@ -101,6 +101,8 @@ Total
 1 South Africa        32      17    22    71
 2    Sri Lanka         0      21     0    21
 ________________________________________________
+ England tour of Sri Lanka 
+ 
  1st Test 
  
  [1] "T" "L" "T" "L" "L" "T" "T" "W" "T" "T" "T" "T" "L"
@@ -131,4 +133,38 @@ Total
        Team Home/Away Session Bonus Total
 1 Sri Lanka         0      22     0    22
 2   England        48      28    10    86
+__________________________________________________________________
+South Africa tour of Sri Lanka
+
+1st Test
+
+ [1] "L" "W" "W" "W" "T" "W" "W" "L" "T" "W" "W"
+ [1] "W" "L" "L" "L" "T" "L" "L" "W" "T" "L" "L"
  
+Hrecord
+L T W 
+2 2 7 
+
+          Team Home/Away Session Bonus Total
+1     Pakistan        16      16     8    40
+2 South Africa         0       6     0     6
+ 
+2nd Test
+
+ [1] "T" "W" "T" "L" "T" "L" "T" "T" "L" "T" "W" "L" "T" "W"
+ [1] "T" "L" "T" "W" "T" "W" "T" "T" "W" "T" "L" "W" "T" "L"
+ 
+Hrecord
+L T W 
+4 7 3 
+
+          Team Home/Away Session Bonus Total
+1     Pakistan        16      13     2    31
+2 South Africa         0      15     0    15
+
+Total
+
+          Team Home/Away Session Bonus Total
+1     Pakistan        32      29     10    71
+2 South Africa         0      21     0     21
+_______________________________________________________________________
