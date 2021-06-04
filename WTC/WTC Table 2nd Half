@@ -67,5 +67,39 @@ Total
 1 New Zealand        32      34     6    72
 2    Pakistan         0      20     0    20
 _________________________________________________________
+#Sri Lanka tour of South Africa
 
+1st Test 
+
+ [1] "L" "L" "L" "L" "W" "L" "W" "W" "L" "W" "L"
+ [1] "W" "W" "W" "W" "L" "W" "L" "L" "W" "L" "W"
+ 
+ Hrecord
+L W 
+7 4 
+
+          Team Home/Away Session Bonus Total
+1 South Africa        16       8     8    32
+2    Sri Lanka         0      14     0    14
+
+
+2nd Test
+
+[1] "W" "T" "W" "L" "L" "L" "W" "W"
+[1] "L" "T" "L" "W" "W" "W" "L" "L"
+
+Hrecord
+L T W 
+3 1 4 
+
+          Team Home/Away Session Bonus Total
+1 South Africa        16       9    14    39
+2    Sri Lanka         0       7     0     7
+
+Total
+          Team Home/Away Session Bonus Total
+1 South Africa        32      17    22    71
+2    Sri Lanka         0      21     0    21
+________________________________________________
+ 
  
