@@ -262,3 +262,36 @@ Total
 1   India        48      42    38    128
 2 England        24      38     2     64
 ____________________________________________
+# Sri Lanka tour of West Indies 
+
+1st Test 
+ [1] "T" "T" "T" "T" "T" "T" "L" "L" "T" "L" "L" "W" "W" "W" "T"
+ [1] "T" "T" "T" "T" "T" "T" "W" "W" "T" "W" "W" "L" "L" "L" "T"
+ 
+ Arecord
+L T W 
+3 8 4 
+
+         Team Home/Away Session Bonus Total
+1 West Indies         8      14     0    22
+2   Sri Lanka        12      16     0    28
+
+
+2nd Test
+
+ [1] "T" "W" "T" "T" "T" "T" "T" "T" "L" "T" "W" "W" "L" "T" "L"
+ [1] "T" "L" "T" "T" "T" "T" "T" "T" "W" "T" "L" "L" "W" "T" "W"
+ 
+ Arecord
+L T W 
+3 9 3 
+
+         Team Home/Away Session Bonus Total
+1 West Indies         8      15     0    23
+2   Sri Lanka        12      15     0    27
+
+Total
+
+         Team Home/Away Session Bonus Total
+1 West Indies        16      29     0    45
+2   Sri Lanka        24      31     0    55
