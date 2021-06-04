@@ -295,3 +295,39 @@ Total
          Team Home/Away Session Bonus Total
 1 West Indies        16      29     0    45
 2   Sri Lanka        24      31     0    55
+__________________________________________________________________
+#Bangladesh tour of Sri Lanka 
+
+1st Test 
+
+ [1] "L" "L" "L" "L" "T" "L" "L" "W" "T" "W" "W" "W" "T" "T" "T"
+ [1] "W" "W" "W" "W" "T" "W" "W" "L" "T" "L" "L" "L" "T" "T" "T"
+ 
+ Arecord
+L T W 
+4 5 6 
+
+        Team Home/Away Session Bonus Total
+1  Sri Lanka         8      13     0    21
+2 Bangladesh        12      17     0    29
+
+2nd Test 
+
+ [1] "W" "W" "W" "L" "T" "W" "W" "T" "W" "T" "W" "T" "W"
+ [1] "L" "L" "L" "W" "T" "L" "L" "T" "L" "T" "L" "T" "L"
+ 
+Hrecord
+L T W 
+1 4 8 
+
+        Team Home/Away Session Bonus Total
+1  Sri Lanka        16      20     4    40
+2 Bangladesh         0       6     0     6
+
+Total
+
+        Team Home/Away Session Bonus Total
+1  Sri Lanka        24      33     4    61
+2 Bangladesh        12      23     0    35
+_________________________________________________________
+ 
