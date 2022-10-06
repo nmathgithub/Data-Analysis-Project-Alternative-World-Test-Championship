@@ -1,6 +1,5 @@
-# Cricket-Shiny-App
-Create Shiny Apps based on cricket data
+# Data-Analysis-Project-Alternative-World-Test-Championship-Algorithm
+Implement the proposed alternative algorithm to calculate the World Test Championship rankings
 
-#Great Left-handed batsen
 
-- Alastair Cook (England), Graeme Smith (South Africa), Kumar Sangakkara (Sri Lanka)
+
